@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Real-time Temperature & Humidity</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.min.js"></script>
+    <style>
+        body {
+            /* Set the background color here */
+            background-color: #000000; /* Black */
+        }
+    </style>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const socket = io();
+            const img = document.getElementById("figure");
+
+            socket.on("connect", () => {
+                socket.emit("request_data");
+            });
+
+            socket.on("update_figure", (figure_data) => {
+                img.src = "data:image/png;base64," + figure_data;
+            });
+        });
+    </script>
+</head>
+<body>
+    <h1>Temperature & Humidity</h1>
+    <img id="figure" src="" alt="Data from DHT22 sensor streamed by ESP32">
+</body>
+</html>
+
